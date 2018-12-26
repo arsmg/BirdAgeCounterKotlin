@@ -1,0 +1,16 @@
+<resources>
+    tools:ignore="ExtraTranslation"
+    xmlns:tools="http://schemas.android.com/tools"
+    <string name="app_name">Bird Age Counter</string>
+    <string name="ad">Adult</string>
+    <string name="imm">Immature</string>
+    <string name="sub">Subadult</string>
+    <string name="juv">Juvenile</string>
+    <string name="res">Reset</string>
+    <string name="minus">-1</string>
+    <string name="plus">+1</string>
+    <string name="zero">0</string>
+    <string name="total">Total numbers counted</string>
+    <string name="location">Notes</string>
+    <string name="tags">Tagged individuals</string>
+</resources>
