@@ -5,12 +5,11 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import timber.log.Timber
 
 const val KEY_ADULTS = "adultNumbers"
 const val KEY_SUBA = "subadNumbers"
@@ -20,21 +19,19 @@ const val KEY_JUV = "juvNumbers"
 class MainActivity : AppCompatActivity() {
 
     // Number of adults counted
-    private var adultNumbers: Int = 0
+    private var adultNumbers = 0
 
     // Number of subadults counted
-    private var subadNumbers: Int = 0
+    private var subadNumbers = 0
 
     // Number of immatures counted
-    private var immNumbers: Int = 0
+    private var immNumbers = 0
 
     // Number of juveniles counted
-    private var juvNumbers: Int = 0
+    private var juvNumbers = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
         setContentView(R.layout.activity_main)
 
         if (savedInstanceState != null) {
@@ -51,6 +48,7 @@ class MainActivity : AppCompatActivity() {
     fun addAdult(v: View) {
         adultNumbers++
         displayAdults(adultNumbers)
+        timber.log.Timber.i("addAdult Called")
     }
 
     /**
@@ -66,6 +64,7 @@ class MainActivity : AppCompatActivity() {
         }
         adultNumbers--
         displayAdults(adultNumbers)
+        Timber.i("remAdult Called")
     }
 
     /**
@@ -74,6 +73,7 @@ class MainActivity : AppCompatActivity() {
     fun addSubadult(v: View) {
         subadNumbers++
         displaySubadults(subadNumbers)
+        Timber.i("addSubadult Called")
     }
 
     /**
@@ -89,6 +89,7 @@ class MainActivity : AppCompatActivity() {
         }
         subadNumbers--
         displaySubadults(subadNumbers)
+        Timber.i("remSubadult Called")
     }
 
     /**
@@ -241,28 +242,34 @@ class MainActivity : AppCompatActivity() {
     /** Lifecycle Methods **/
     override fun onStart() {
         super.onStart()
+        Timber.i("onStart Called")
 
     }
 
     override fun onResume() {
         super.onResume()
+        Timber.i("onResume Called")
     }
 
     override fun onPause() {
         super.onPause()
+        Timber.i("onPause Called")
     }
 
     override fun onStop() {
         super.onStop()
+        Timber.i("onStop Called")
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        Timber.i("onDestroy Called")
 
     }
 
     override fun onRestart() {
         super.onRestart()
+        Timber.i("onRestart Called")
 
     }
 
