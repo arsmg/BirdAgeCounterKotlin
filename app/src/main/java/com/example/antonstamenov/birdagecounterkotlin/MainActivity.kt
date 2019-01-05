@@ -2,6 +2,7 @@ package com.example.antonstamenov.birdagecounterkotlin
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.arch.lifecycle.*
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -9,16 +10,39 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import com.example.antonstamenov.birdagecounterkotlin.MainActivity.MyViewModel.Companion.AD_KEY
+import com.example.antonstamenov.birdagecounterkotlin.R.id.*
+import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 
-const val KEY_ADULTS = "adultNumbers"
-const val KEY_SUBA = "subadNumbers"
-const val KEY_IMM = "immNumbers"
-const val KEY_JUV = "juvNumbers"
+
+const val KEY_ADULTS = "adults_key"
+const val KEY_SUBA = "subadults_key"
+const val KEY_IMM = "immatures_key"
+const val KEY_JUV = "juveniles_key"
 
 class MainActivity : AppCompatActivity() {
+    private val viewModel: MyViewModel by lazy {
+        ViewModelProviders.of(this).get(MyViewModel::class.java)
+    }
 
-    // Number of adults counted
+    private val changeAdult =
+        Observer<Int> { value -> value?.let { displayAdults(value)}
+        }
+
+    private val changeSub =
+        Observer<Int> { value -> value?.let { displaySubadults(value)}
+        }
+
+    private val changeImm =
+        Observer<Int> { value -> value?.let { displayImmatures(value)}
+        }
+
+    private val changeJuv =
+        Observer<Int> { value -> value?.let { displayJuveniles(value)}
+        }
+
+    /* Number of adults counted
     private var adultNumbers = 0
 
     // Number of subadults counted
@@ -28,157 +52,64 @@ class MainActivity : AppCompatActivity() {
     private var immNumbers = 0
 
     // Number of juveniles counted
-    private var juvNumbers = 0
+    private var juvNumbers = 0 */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        viewModel.restoreState(savedInstanceState)
+        viewModel.displayAdults.observe(this, changeAdult)
+        viewModel.displaySubadults.observe(this, changeSub)
+        viewModel.displayImmatures.observe(this, changeImm)
+        viewModel.displayJuveniles.observe(this, changeJuv)
+        lifecycle.addObserver(viewModel)
+        minAd.setOnClickListener { viewModel.remAdult()}
+        plusAd.setOnClickListener { viewModel.addAdult()}
+        minSub.setOnClickListener { viewModel.remSubadult()}
+        plusSub.setOnClickListener { viewModel.addSubadult()}
+        immMin.setOnClickListener { viewModel.remImmatures()}
+        plusImm.setOnClickListener { viewModel.addImmatures()}
+        minJuv.setOnClickListener { viewModel.remJuveniles()}
+        addJuv.setOnClickListener { viewModel.addJuveniles()}
 
-        if (savedInstanceState != null) {
-            adultNumbers = savedInstanceState.getInt(KEY_ADULTS, 0)
-            subadNumbers = savedInstanceState.getInt(KEY_SUBA, 0)
-            immNumbers = savedInstanceState.getInt(KEY_IMM, 0)
-            juvNumbers = savedInstanceState.getInt(KEY_JUV, 0)
-        }
+
+       /* if (savedInstanceState != null) {
+            adultNumbers = savedInstanceState.getInt(KEY_ADULTS)
+            subadNumbers = savedInstanceState.getInt(KEY_SUBA)
+            immNumbers = savedInstanceState.getInt(KEY_IMM)
+            juvNumbers = savedInstanceState.getInt(KEY_JUV)
+        }*/
     }
 
     /**
-     * Increase Adults by 1.
-     */
-    fun addAdult(v: View) {
-        adultNumbers++
-        displayAdults(adultNumbers)
-        timber.log.Timber.i("addAdult Called")
-    }
-
-    /**
-     * Decrease Adults by 1.
-     */
-    fun remAdult(v: View) {
-        if (adultNumbers == 0) {
-            Toast.makeText(
-                applicationContext,
-                "Negative counts restricted!", Toast.LENGTH_SHORT
-            ).show()
-            return
-        }
-        adultNumbers--
-        displayAdults(adultNumbers)
-        Timber.i("remAdult Called")
-    }
-
-    /**
-     * Increase Subdults by 1.
-     */
-    fun addSubadult(v: View) {
-        subadNumbers++
-        displaySubadults(subadNumbers)
-        Timber.i("addSubadult Called")
-    }
-
-    /**
-     * Decrease Subdults by 1.
-     */
-    fun remSubadult(v: View) {
-        if (subadNumbers == 0) {
-            Toast.makeText(
-                applicationContext,
-                "Negative counts restricted!", Toast.LENGTH_SHORT
-            ).show()
-            return
-        }
-        subadNumbers--
-        displaySubadults(subadNumbers)
-        Timber.i("remSubadult Called")
-    }
-
-    /**
-     * Increase Immatures by 1.
-     */
-    fun addImmatures(v: View) {
-        immNumbers++
-        displayImmatures(immNumbers)
-    }
-
-    /**
-     * Decrease Immatures by 1.
-     */
-    fun remImmatures(v: View) {
-        if (immNumbers == 0) {
-            Toast.makeText(
-                applicationContext,
-                "Negative counts restricted!", Toast.LENGTH_SHORT
-            ).show()
-            return
-        }
-        immNumbers--
-        displayImmatures(immNumbers)
-    }
-
-    /**
-     * Increase Juveniles by 1.
-     */
-    fun addJuveniles(view: View) {
-        juvNumbers++
-        displayJuveniles(juvNumbers)
-    }
-
-    /**
-     * Decrease Juveniles by 1.
-     */
-    fun remJuveniles(v: View) {
-        if (juvNumbers == 0) {
-            Toast.makeText(
-                applicationContext,
-                "Negative counts restricted!", Toast.LENGTH_SHORT
-            ).show()
-            return
-        }
-        juvNumbers--
-        displayJuveniles(juvNumbers)
-    }
-
-    /**
-     * Calcolate total numbers.
-     */
-    fun totalNumber(v: View) {
-        val totalCount = (juvNumbers + immNumbers + subadNumbers
-                + adultNumbers)
-        displayTotalCount(totalCount)
-    }
-
-
-    /**
-     * Displays the Adults numbers.
-     */
-    fun displayAdults(numbers: Int) {
-        val scoreView = findViewById<View>(R.id.adult) as TextView
-        scoreView.text = numbers.toString()
+    * Displays the Adults numbers.
+    */
+    fun displayAdults(value: Int) {
+        adult_count_text.text = (value).toString()
     }
 
     /**
      * Displays the Subadults numbers.
      */
     fun displaySubadults(numbers: Int) {
-        val scoreView = findViewById<View>(R.id.countSub) as TextView
-        scoreView.text = numbers.toString()
+        sub_count_text.text = numbers.toString()
     }
 
     /**
      * Displays the Immatures numbers.
      */
     fun displayImmatures(numbers: Int) {
-        val scoreView = findViewById<View>(R.id.countImm) as TextView
-        scoreView.text = numbers.toString()
+        imm_count_text.text = numbers.toString()
     }
 
     /**
      * Displays the Juveniles numbers.
      */
     fun displayJuveniles(numbers: Int) {
-        val scoreView = findViewById<View>(R.id.countJuv) as TextView
-        scoreView.text = numbers.toString()
+        juv_count_text.text = numbers.toString()
     }
+
+
 
     /**
      * Displays total numbers.
@@ -196,7 +127,7 @@ class MainActivity : AppCompatActivity() {
      * Reset count.
      */
 
-    fun res(view: View) {
+    /*fun res(view: View) {
         val altdial = AlertDialog.Builder(this@MainActivity)
         altdial.setMessage(" ").setCancelable(false)
             .setPositiveButton("Yes") { dialogInterface, i ->
@@ -215,7 +146,7 @@ class MainActivity : AppCompatActivity() {
         val alert = altdial.create()
         alert.setTitle("Reset")
         alert.show()
-    }
+    }*/
 
     companion object {
         @SuppressLint("StaticFieldLeak")
@@ -223,20 +154,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putInt(KEY_ADULTS, adultNumbers)
-        outState.putInt(KEY_SUBA, subadNumbers)
-        outState.putInt(KEY_IMM, immNumbers)
-        outState.putInt(KEY_JUV, juvNumbers)
         super.onSaveInstanceState(outState)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
-        super.onRestoreInstanceState(savedInstanceState)
-        adultNumbers = savedInstanceState!!.getInt(KEY_ADULTS)
-        subadNumbers = savedInstanceState!!.getInt(KEY_SUBA)
-        immNumbers = savedInstanceState!!.getInt(KEY_IMM)
-        juvNumbers = savedInstanceState!!.getInt(KEY_JUV)
-
+        viewModel.saveState(outState)
     }
 
     /** Lifecycle Methods **/
@@ -271,6 +190,119 @@ class MainActivity : AppCompatActivity() {
         super.onRestart()
         Timber.i("onRestart Called")
 
+    }
+
+    class MyViewModel (private var countAd: Int = 0, private var countSub: Int = 0, private var countImm: Int = 0,
+                       private var countJuv: Int = 0) : ViewModel(), LifecycleObserver {
+
+        companion object {
+            const val AD_KEY = "AdKey"
+            const val SUB_KEY = "SubKey"
+            const val IMM_KEY = "ImmKey"
+            const val JUV_KEY = "JuvKey"
+        }
+
+        val displayAdults = MutableLiveData<Int>()
+        val displaySubadults = MutableLiveData<Int>()
+        val displayImmatures = MutableLiveData<Int>()
+        val displayJuveniles = MutableLiveData<Int>()
+
+
+        /**
+         * Increase Adults by 1.
+         */
+        fun addAdult() { displayAdults.value = ++countAd
+            timber.log.Timber.i("addAdult Called")
+        }
+
+        /**
+         * Decrease Adults by 1.
+         */
+        fun remAdult() {
+            if (countAd == 0) {
+                return
+            }
+            displayAdults.value = --countAd
+            Timber.i("remAdult Called")
+        }
+
+        /**
+         * Increase Subdults by 1.
+         */
+        fun addSubadult() {
+            displaySubadults.value = ++countSub
+            Timber.i("addSubadult Called")
+        }
+
+        /**
+         * Decrease Subdults by 1.
+         */
+        fun remSubadult() {
+            if (countSub == 0) {
+                return
+            }
+            displaySubadults.value = --countSub
+            Timber.i("remSubadult Called")
+        }
+
+        /**
+         * Increase Immatures by 1.
+         */
+        fun addImmatures() {
+            displayImmatures.value = ++countImm
+        }
+
+        /**
+         * Decrease Immatures by 1.
+         */
+        fun remImmatures() {
+            if (countImm == 0) {
+                return
+            }
+            displayImmatures.value = --countImm
+        }
+
+        /**
+         * Increase Juveniles by 1.
+         */
+        fun addJuveniles() {
+            displayJuveniles.value = ++countJuv
+        }
+
+        /**
+         * Decrease Juveniles by 1.
+         */
+        fun remJuveniles() {
+            if (countJuv == 0) {
+                return
+            }
+            displayJuveniles.value = --countJuv
+        }
+
+        fun saveState(outState: Bundle) {
+            outState.putInt(AD_KEY, countAd)
+            outState.putInt(SUB_KEY, countSub)
+            outState.putInt(IMM_KEY, countImm)
+            outState.putInt(JUV_KEY, countJuv)
+        }
+
+        fun restoreState(inState: Bundle?) {
+            inState?.let {
+                countAd = inState.getInt(AD_KEY)
+                countSub = inState.getInt(SUB_KEY)
+                countImm = inState.getInt(IMM_KEY)
+                countJuv = inState.getInt(JUV_KEY)
+            }
+        }
+
+        /**
+         * Calcolate total numbers.
+         */
+        /*fun totalNumber(v: View) {
+            val totalCount = (countJuv + countImm + countSub
+                    + countAd)
+            displayTotalCount(totalCount)
+        }*/
     }
 
 }

@@ -28,15 +28,14 @@
             style="@style/Button_minus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="remAdult"
             android:text="@string/minus"
-            app:layout_constraintBottom_toTopOf="@+id/adult"
-            app:layout_constraintEnd_toEndOf="@+id/adult"
-            app:layout_constraintStart_toStartOf="@+id/adult"
+            app:layout_constraintBottom_toTopOf="@+id/adult_count_text"
+            app:layout_constraintEnd_toEndOf="@+id/adult_count_text"
+            app:layout_constraintStart_toStartOf="@+id/adult_count_text"
             app:layout_constraintTop_toBottomOf="@+id/adult_title" />
 
         <TextView
-            android:id="@+id/adult"
+            android:id="@+id/adult_count_text"
             style="@style/Text_counts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -49,7 +48,6 @@
         <Button
             android:id="@+id/plusAd"
             style="@style/Button_plus"
-            android:onClick="addAdult"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -61,7 +59,7 @@
             app:layout_constraintBottom_toTopOf="@+id/view2"
             app:layout_constraintEnd_toStartOf="@+id/view"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/adult" />
+            app:layout_constraintTop_toBottomOf="@+id/adult_count_text" />
 
         <TextView
             android:id="@+id/Immature"
@@ -86,15 +84,14 @@
             style="@style/Button_minus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="remImmatures"
             android:text="@string/minus"
-            app:layout_constraintBottom_toTopOf="@+id/countImm"
-            app:layout_constraintEnd_toEndOf="@+id/countImm"
-            app:layout_constraintStart_toStartOf="@+id/countImm"
+            app:layout_constraintBottom_toTopOf="@+id/imm_count_text"
+            app:layout_constraintEnd_toEndOf="@+id/imm_count_text"
+            app:layout_constraintStart_toStartOf="@+id/imm_count_text"
             app:layout_constraintTop_toBottomOf="@+id/Immature" />
 
         <TextView
-            android:id="@+id/countImm"
+            android:id="@+id/imm_count_text"
             style="@style/Text_counts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -114,13 +111,12 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
-            android:onClick="addImmatures"
             android:text="@string/plus"
             app:layout_constraintBottom_toTopOf="@+id/view2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/view"
-            app:layout_constraintTop_toBottomOf="@+id/countImm"
+            app:layout_constraintTop_toBottomOf="@+id/imm_count_text"
             app:layout_constraintVertical_bias="0.488" />
 
         <View
@@ -170,16 +166,15 @@
             style="@style/Button_minus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="remSubadult"
             android:text="@string/minus"
-            app:layout_constraintBottom_toTopOf="@+id/countSub"
-            app:layout_constraintEnd_toEndOf="@+id/countSub"
+            app:layout_constraintBottom_toTopOf="@+id/sub_count_text"
+            app:layout_constraintEnd_toEndOf="@+id/sub_count_text"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="@+id/countSub"
+            app:layout_constraintStart_toStartOf="@+id/sub_count_text"
             app:layout_constraintTop_toBottomOf="@+id/subad" />
 
         <TextView
-            android:id="@+id/countSub"
+            android:id="@+id/sub_count_text"
             style="@style/Text_counts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -200,38 +195,36 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
-            android:onClick="addSubadult"
             android:text="@string/plus"
             app:layout_constraintBottom_toTopOf="@+id/editText"
             app:layout_constraintEnd_toStartOf="@+id/view"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/countSub" />
+            app:layout_constraintTop_toBottomOf="@+id/sub_count_text" />
 
         <TextView
             android:id="@+id/Juvenile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/juv"
-            app:layout_constraintBottom_toTopOf="@+id/button7"
-            app:layout_constraintEnd_toEndOf="@+id/button7"
-            app:layout_constraintStart_toStartOf="@+id/button7"
+            app:layout_constraintBottom_toTopOf="@+id/minJuv"
+            app:layout_constraintEnd_toEndOf="@+id/minJuv"
+            app:layout_constraintStart_toStartOf="@+id/minJuv"
             app:layout_constraintTop_toBottomOf="@+id/view2" />
 
         <Button
-            android:id="@+id/button7"
+            android:id="@+id/minJuv"
             style="@style/Button_minus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="remJuveniles"
             android:text="@string/minus"
-            app:layout_constraintBottom_toTopOf="@+id/countJuv"
-            app:layout_constraintEnd_toEndOf="@+id/countJuv"
+            app:layout_constraintBottom_toTopOf="@+id/juv_count_text"
+            app:layout_constraintEnd_toEndOf="@+id/juv_count_text"
             app:layout_constraintHorizontal_bias="0.507"
-            app:layout_constraintStart_toStartOf="@+id/countJuv"
+            app:layout_constraintStart_toStartOf="@+id/juv_count_text"
             app:layout_constraintTop_toBottomOf="@+id/Juvenile" />
 
         <TextView
-            android:id="@+id/countJuv"
+            android:id="@+id/juv_count_text"
             style="@style/Text_counts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -239,7 +232,7 @@
             app:layout_constraintBottom_toTopOf="@+id/addJuv"
             app:layout_constraintEnd_toEndOf="@+id/addJuv"
             app:layout_constraintStart_toStartOf="@+id/addJuv"
-            app:layout_constraintTop_toBottomOf="@+id/button7" />
+            app:layout_constraintTop_toBottomOf="@+id/minJuv" />
 
         <Button
             android:id="@+id/addJuv"
@@ -251,12 +244,11 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
-            android:onClick="addJuveniles"
             android:text="@string/plus"
             app:layout_constraintBottom_toBottomOf="@+id/view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/view"
-            app:layout_constraintTop_toBottomOf="@+id/countJuv" />
+            app:layout_constraintTop_toBottomOf="@+id/juv_count_text" />
 
         <ImageButton
             android:id="@+id/imageButton"
@@ -266,7 +258,6 @@
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginBottom="8dp"
-            android:onClick="totalNumber"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view"
@@ -291,7 +282,6 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
-            android:onClick="res"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view"
