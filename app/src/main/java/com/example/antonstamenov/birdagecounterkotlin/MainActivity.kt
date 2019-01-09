@@ -3,6 +3,7 @@ package com.example.antonstamenov.birdagecounterkotlin
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.arch.lifecycle.*
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -42,6 +43,11 @@ class MainActivity : AppCompatActivity() {
         Observer<Int> { value -> value?.let { displayJuveniles(value)}
         }
 
+    private val changeTotals =
+        Observer<Int> { value -> value?.let { displayTotalCount(value)}
+        }
+
+
     /* Number of adults counted
     private var adultNumbers = 0
 
@@ -62,6 +68,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.displaySubadults.observe(this, changeSub)
         viewModel.displayImmatures.observe(this, changeImm)
         viewModel.displayJuveniles.observe(this, changeJuv)
+        viewModel.displayTotalCount.observe(this, changeTotals)
         lifecycle.addObserver(viewModel)
         minAd.setOnClickListener { viewModel.remAdult()}
         plusAd.setOnClickListener { viewModel.addAdult()}
@@ -71,14 +78,45 @@ class MainActivity : AppCompatActivity() {
         plusImm.setOnClickListener { viewModel.addImmatures()}
         minJuv.setOnClickListener { viewModel.remJuveniles()}
         addJuv.setOnClickListener { viewModel.addJuveniles()}
+        totals_button.setOnClickListener {viewModel.totalNumber()}
+        reset_button.setOnClickListener { finish(); startActivity(getIntent());}
 
 
-       /* if (savedInstanceState != null) {
-            adultNumbers = savedInstanceState.getInt(KEY_ADULTS)
-            subadNumbers = savedInstanceState.getInt(KEY_SUBA)
-            immNumbers = savedInstanceState.getInt(KEY_IMM)
-            juvNumbers = savedInstanceState.getInt(KEY_JUV)
+        /*
+        // Set a click listener for button widget
+        button.setOnClickListener {
+            // Initialize a new instance of
+            val builder = AlertDialog.Builder(this@MainActivity)
+
+            // Set the alert dialog title
+            builder.setTitle("App background color")
+
+            // Display a message on alert dialog
+            builder.setMessage("Are you want to set the app background color to RED?")
+
+            // Set a positive button and its click listener on alert dialog
+            builder.setPositiveButton("YES") { dialog, which ->
+                // Do something when user press the positive button
+                viewModel.displayAdults = 0
+
+                // Change the app background color
+                root_layout.setBackgroundColor(Color.RED)
+            }
+
+
+            // Display a negative button on alert dialog
+            builder.setNegativeButton("No") { dialog, which ->
+                Toast.makeText(applicationContext, "You are not agree.", Toast.LENGTH_SHORT).show()
+            }
+
         }*/
+
+            /* if (savedInstanceState != null) {
+                 adultNumbers = savedInstanceState.getInt(KEY_ADULTS)
+                 subadNumbers = savedInstanceState.getInt(KEY_SUBA)
+                 immNumbers = savedInstanceState.getInt(KEY_IMM)
+                 juvNumbers = savedInstanceState.getInt(KEY_JUV)
+             }*/
     }
 
     /**
@@ -109,25 +147,24 @@ class MainActivity : AppCompatActivity() {
         juv_count_text.text = numbers.toString()
     }
 
-
-
     /**
      * Displays total numbers.
      */
     fun displayTotalCount(numbers: Int) {
-        val scoreView = findViewById<View>(R.id.totals) as TextView
-        scoreView.text = numbers.toString()
+        totals.text = numbers.toString()
     }
 
     fun displayTags(location: String) {
         val editText = findViewById<EditText>(R.id.editText)
     }
 
+
+    /*
     /**
      * Reset count.
      */
 
-    /*fun res(view: View) {
+    fun res(view: View) {
         val altdial = AlertDialog.Builder(this@MainActivity)
         altdial.setMessage(" ").setCancelable(false)
             .setPositiveButton("Yes") { dialogInterface, i ->
@@ -206,6 +243,20 @@ class MainActivity : AppCompatActivity() {
         val displaySubadults = MutableLiveData<Int>()
         val displayImmatures = MutableLiveData<Int>()
         val displayJuveniles = MutableLiveData<Int>()
+        val displayTotalCount = MutableLiveData<Int>()
+
+
+        fun res() {
+           /* val altdial = AlertDialog.Builder(this)
+            altdial.setMessage(" ").setCancelable(false)
+                .setPositiveButton("Yes") { dialogInterface, i ->*/
+                   displayJuveniles.let { countImm = 0 }
+                }
+               /* .setNegativeButton("No") { dialogInterface, i -> dialogInterface.cancel() }
+            val alert = altdial.create()
+            alert.setTitle("Reset")
+            alert.show()
+        }*/
 
 
         /**
@@ -279,6 +330,13 @@ class MainActivity : AppCompatActivity() {
             displayJuveniles.value = --countJuv
         }
 
+        /**
+         * Calcolate total numbers.
+         */
+        fun totalNumber() {
+            displayTotalCount.value = countAd + countSub + countImm + countJuv
+        }
+
         fun saveState(outState: Bundle) {
             outState.putInt(AD_KEY, countAd)
             outState.putInt(SUB_KEY, countSub)
@@ -295,14 +353,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        /**
-         * Calcolate total numbers.
-         */
-        /*fun totalNumber(v: View) {
-            val totalCount = (countJuv + countImm + countSub
-                    + countAd)
-            displayTotalCount(totalCount)
-        }*/
     }
 
 }

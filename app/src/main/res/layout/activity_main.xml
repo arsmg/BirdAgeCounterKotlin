@@ -251,7 +251,7 @@
             app:layout_constraintTop_toBottomOf="@+id/juv_count_text" />
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/totals_button"
             style="@style/total_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -272,11 +272,11 @@
             android:layout_marginBottom="8dp"
             android:text="@string/zero"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageButton"
+            app:layout_constraintStart_toEndOf="@+id/totals_button"
             app:layout_constraintTop_toBottomOf="@+id/view" />
 
         <ImageButton
-            android:id="@+id/imageButton2"
+            android:id="@+id/reset_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -302,7 +302,7 @@
             android:hint="@string/tags"
             android:inputType="text|textMultiLine"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageButton2"
+            app:layout_constraintEnd_toStartOf="@+id/reset_button"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/totals"
             app:layout_constraintTop_toBottomOf="@+id/view"
