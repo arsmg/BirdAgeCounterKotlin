@@ -2,6 +2,7 @@ package com.example.antonstamenov.birdagecounterkotlin
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.app.Dialog
 import android.arch.lifecycle.*
 import android.graphics.Color
 import android.os.Bundle
@@ -27,6 +28,9 @@ class MainActivity : AppCompatActivity() {
         ViewModelProviders.of(this).get(MyViewModel::class.java)
     }
 
+    /**
+     * initiate viewModel change observers
+     */
     private val changeAdult =
         Observer<Int> { value -> value?.let { displayAdults(value)}
         }
@@ -48,18 +52,6 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-    /* Number of adults counted
-    private var adultNumbers = 0
-
-    // Number of subadults counted
-    private var subadNumbers = 0
-
-    // Number of immatures counted
-    private var immNumbers = 0
-
-    // Number of juveniles counted
-    private var juvNumbers = 0 */
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -79,44 +71,30 @@ class MainActivity : AppCompatActivity() {
         minJuv.setOnClickListener { viewModel.remJuveniles()}
         addJuv.setOnClickListener { viewModel.addJuveniles()}
         totals_button.setOnClickListener {viewModel.totalNumber()}
-        reset_button.setOnClickListener { finish(); startActivity(getIntent());}
-
-
-        /*
-        // Set a click listener for button widget
-        button.setOnClickListener {
-            // Initialize a new instance of
+        reset_button.setOnClickListener {
             val builder = AlertDialog.Builder(this@MainActivity)
 
             // Set the alert dialog title
-            builder.setTitle("App background color")
+            builder.setTitle("Do you wish to RESET the app?")
 
             // Display a message on alert dialog
-            builder.setMessage("Are you want to set the app background color to RED?")
+            builder.setMessage("All data will be lost!")
 
-            // Set a positive button and its click listener on alert dialog
-            builder.setPositiveButton("YES") { dialog, which ->
-                // Do something when user press the positive button
-                viewModel.displayAdults = 0
-
-                // Change the app background color
-                root_layout.setBackgroundColor(Color.RED)
+            builder.setPositiveButton("Yes"){dialog, witch ->
+                 finish(); startActivity(getIntent())
             }
-
 
             // Display a negative button on alert dialog
-            builder.setNegativeButton("No") { dialog, which ->
-                Toast.makeText(applicationContext, "You are not agree.", Toast.LENGTH_SHORT).show()
-            }
+            builder.setNegativeButton("No"){dialog,which ->}
 
-        }*/
+            // Finally, make the alert dialog using builder
+            val dialog: AlertDialog = builder.create()
 
-            /* if (savedInstanceState != null) {
-                 adultNumbers = savedInstanceState.getInt(KEY_ADULTS)
-                 subadNumbers = savedInstanceState.getInt(KEY_SUBA)
-                 immNumbers = savedInstanceState.getInt(KEY_IMM)
-                 juvNumbers = savedInstanceState.getInt(KEY_JUV)
-             }*/
+            // Display the alert dialog on app interface
+            dialog.show()
+        }
+
+
     }
 
     /**
@@ -157,33 +135,6 @@ class MainActivity : AppCompatActivity() {
     fun displayTags(location: String) {
         val editText = findViewById<EditText>(R.id.editText)
     }
-
-
-    /*
-    /**
-     * Reset count.
-     */
-
-    fun res(view: View) {
-        val altdial = AlertDialog.Builder(this@MainActivity)
-        altdial.setMessage(" ").setCancelable(false)
-            .setPositiveButton("Yes") { dialogInterface, i ->
-                adultNumbers = 0
-                subadNumbers = 0
-                immNumbers = 0
-                juvNumbers = 0
-                val totalCount = 0
-                displayAdults(adultNumbers)
-                displaySubadults(subadNumbers)
-                displayImmatures(immNumbers)
-                displayJuveniles(juvNumbers)
-                displayTotalCount(totalCount)
-            }
-            .setNegativeButton("No") { dialogInterface, i -> dialogInterface.cancel() }
-        val alert = altdial.create()
-        alert.setTitle("Reset")
-        alert.show()
-    }*/
 
     companion object {
         @SuppressLint("StaticFieldLeak")
@@ -229,9 +180,15 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * initiates viewModel for all counters
+     */
     class MyViewModel (private var countAd: Int = 0, private var countSub: Int = 0, private var countImm: Int = 0,
                        private var countJuv: Int = 0) : ViewModel(), LifecycleObserver {
 
+        /**
+         * initiate saveInstance keys
+         */
         companion object {
             const val AD_KEY = "AdKey"
             const val SUB_KEY = "SubKey"
@@ -244,20 +201,6 @@ class MainActivity : AppCompatActivity() {
         val displayImmatures = MutableLiveData<Int>()
         val displayJuveniles = MutableLiveData<Int>()
         val displayTotalCount = MutableLiveData<Int>()
-
-
-        fun res() {
-           /* val altdial = AlertDialog.Builder(this)
-            altdial.setMessage(" ").setCancelable(false)
-                .setPositiveButton("Yes") { dialogInterface, i ->*/
-                   displayJuveniles.let { countImm = 0 }
-                }
-               /* .setNegativeButton("No") { dialogInterface, i -> dialogInterface.cancel() }
-            val alert = altdial.create()
-            alert.setTitle("Reset")
-            alert.show()
-        }*/
-
 
         /**
          * Increase Adults by 1.
